@@ -14,8 +14,3 @@ def stem(word):
 
 def bag_of_words(tokenized_sentence, all_words):
     pass
-
-a = "How does long shipping take?"
-words = ['Organize', 'organizes', 'organizing']
-stemmed_words = [stem(w) for w in words]
-print(stemmed_words)
