@@ -1,10 +1,14 @@
 import json
 import numpy as np
+
+import torch
+import torch.nn
+from torch.utils.data import Dataset, DataLoader
+
 from nltk_utils import tokenize, stem, bag_of_words
 
 with open('intents.json', 'r') as f:
     intents = json.load(f)
-
 
 all_words = []
 tags = []
@@ -33,3 +37,23 @@ for (pattern_sentence, tag) in xy:
 
 X_train = np.array(X_train)
 Y_train = np.array(Y_train)
+
+
+class ChatDataset(Dataset):
+    def __init__(self):
+        self.n_samples = len(X_train)
+        self.x_data = X_train
+        self.y_data = Y_train
+
+    #dataset[idx]
+    def __getitem__(self, index):
+        return self.x_data[index], self.y_data[index]
+
+    def __len__(self):
+        return self.n_samples
+
+# Parameters
+batch_size = 8
+
+dataset = ChatDataset()
+train_loader = DataLoader(dataset=dataset, batch_size=batch_size, shuffle=True, num_workers=2)
