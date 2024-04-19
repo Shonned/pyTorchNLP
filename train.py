@@ -92,3 +92,17 @@ for epoch in range(num_epochs):
         print(f'Epoch [{epoch + 1}/{num_epochs}], Loss: {loss.item():.4f}')
 
 print(f'final loss: {loss.item():.4f}')
+
+# Save the data
+data = {
+    "model_state": model.state_dict(),
+    "input_size": input_size,
+    "output_size": output_size,
+    "hidden_size": hidden_size,
+    "all_words": all_words,
+    "tags": tags,
+}
+
+FILE = 'chat_model.pth'
+torch.save(data, FILE)
+print(f'Saved model to {FILE}')
