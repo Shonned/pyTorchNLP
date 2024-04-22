@@ -16,24 +16,39 @@ for intent in intents['intents']:
     tag = intent['tag']
     tags.append(tag)
     for pattern in intent['patterns']:
-        w = tokenize(pattern)
-        all_words.extend(w)
-        xy.append((w, tag))
+        w = tokenize(pattern)  # Tokenize the pattern (split into words)
+        all_words.extend(w)  # Add the words to the list of all words
+        xy.append((w, tag))  # Add the (word list, tag) pair to xy
+
+# Example content of 'xy':
+# [('Hi', 'greeting'), ('Hey', 'greeting'), ('How', 'greeting'), ...]
+
+# Example content of 'all_words':
+# ['Hi', 'Hey', 'How', 'are', 'you', 'Is', 'anyone', 'there', ...]
 
 ignore_words = ['?', '!', '.', ',']
+# Stemming of words and removal of ignored words
 all_words = [stem(w) for w in all_words if w not in ignore_words]
+# Sorting and removing duplicates to get a list of unique words
 all_words = sorted(set(all_words))
+# Sorting and removing duplicates to get a list of unique tags
 tags = sorted(set(tags))
 
-X_train = []
-Y_train = []
+# Initialize lists for training data
+X_train = []  # Model inputs (word vectors)
+Y_train = []  # Model outputs (intent labels)
+
+# Construct training data sets
 for (pattern_sentence, tag) in xy:
+    # Create the 'bag of words' for the sentence
     bag = bag_of_words(pattern_sentence, all_words)
-    X_train.append(bag)
+    X_train.append(bag)  # Add the BoW vector to X_train
 
+    # Get the index of the tag in the list of tags
     label = tags.index(tag)
-    Y_train.append(label)
+    Y_train.append(label)  # Add the tag index to Y_train
 
+# Convert lists to NumPy arrays for training
 X_train = np.array(X_train)
 Y_train = np.array(Y_train)
 
@@ -50,6 +65,7 @@ class ChatDataset(Dataset):
 
     def __len__(self):
         return self.n_samples
+
 
 # Parameters
 num_epochs = 1000

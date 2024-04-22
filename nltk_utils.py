@@ -9,13 +9,19 @@ def tokenize(text):
     return nltk.word_tokenize(text)
 
 def stem(word):
+    """
+    Stems a given word to its root form.
+    Example:
+    word = "Running"
+    return "run"  # Assuming 'Running' stems to 'run'
+    """
     return stemmer.stem(word.lower())
 
 def bag_of_words(tokenized_sentence, all_words):
     """
-    return bag of words array:
+    Return bag of words array:
     1 for each known word that exists in the sentence, 0 otherwise
-    example:
+    Example:
     sentence = ["hello", "how", "are", "you"]
     words = ["hi", "hello", "I", "you", "bye", "thank", "cool"]
     bog   = [  0 ,    1 ,    0 ,   1 ,    0 ,    0 ,      0]
